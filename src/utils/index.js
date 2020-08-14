@@ -1,3 +1,5 @@
+const isObject = obj => typeof obj === 'object' && obj != null
+
 export default {
     /**
      * 判断一个对象是否在数组里面
@@ -41,6 +43,41 @@ export default {
             return arr1.indexOf(prev.age) - arr1.indexOf(next.age)
         })
         return arr2
+    },
+
+    cloneDeep(source) {
+        if (!isObject(source)) return source // 非对象返回自身
+        const target = Array.isArray(source) ? [] : {}
+        for (var key in source) {
+            if (Object.prototype.hasOwnProperty.call(source, key)) {
+                if (isObject(source[key])) {
+                    target[key] = this.cloneDeep(source[key]) // 注意这里
+                } else {
+                    target[key] = source[key]
+                }
+            }
+        }
+        return target
+    },
+
+    // getDay(0);//当天日期   getDay(-7);//7天前日期   getDay(0);//当天日期   getDay(-3);//3天前日期
+    getDay(day) {
+        var today = new Date()
+        var targetday_milliseconds = today.getTime() + 1000 * 60 * 60 * 24 * day
+        today.setTime(targetday_milliseconds) //注意，这行是关键代码
+        var tYear = today.getFullYear()
+        var tMonth = today.getMonth()
+        var tDate = today.getDate()
+        tMonth = this.doHandleMonth(tMonth + 1)
+        tDate = this.doHandleMonth(tDate)
+        return tYear + '-' + tMonth + '-' + tDate
+    },
+    doHandleMonth(month) {
+        var m = month
+        if (month.toString().length == 1) {
+            m = '0' + month
+        }
+        return m
     },
 }
 function formatDate(date) {
