@@ -11,7 +11,8 @@
         "e2e": "node test/e2e/runner.js",
         "test": "npm run unit && npm run e2e",
         "lint": "eslint --ext .js,.vue src test/unit test/e2e/specs",
-        "build": "node build/build.js"
+        "build": "node build/build.js",
+        "dll": "webpack -p --progress --config build/webpack.dll.conf.js"
     },
     "dependencies": {
         "element-ui": "^2.13.2",
