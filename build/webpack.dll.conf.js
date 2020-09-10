@@ -1,3 +1,7 @@
+/**
+ * 配置静态公共资源打包配置
+ */
+
 var path = require('path')
 var webpack = require('webpack')
 
@@ -6,22 +10,17 @@ function resolve(dir) {
 }
 
 module.exports = {
-    // 你想要打包的模块的数组
+    // 配置需要打包的模块的数组
     entry: {
         vendor: [
             'vue',
-            'lodash',
+            // 'lodash',
             'vuex',
             'axios',
             'vue-router',
-            'iview',
             'element-ui',
-            'echarts',
+            // 'echarts',
             'xlsx',
-            'jquery',
-            'vue-fullcalendar',
-            'vue-cookie',
-            'handsontable',
         ],
     },
     output: {
@@ -45,7 +44,7 @@ module.exports = {
             name: '[name]_library',
             context: __dirname,
         }),
-        // 压缩打包的文件，与该文章主线无关
+        // 压缩打包的文件
         new webpack.optimize.UglifyJsPlugin({
             compress: {
                 warnings: false,
