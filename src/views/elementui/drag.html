@@ -15,12 +15,20 @@
         <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.8.4/Sortable.min.js"></script>
         <div id="app" style="width:800px">
             <div>
-                <el-table :data="tableData" border row-key="id" align="left">
+                <el-table
+                    :data="tableData"
+                    border
+                    row-key="id"
+                    align="left"
+                    @sort-change="sortChange"
+                    :default-sort="sort"
+                >
                     <el-table-column
                         v-for="(item, index) in dropCol"
-                        :key="col[index].prop"
+                        :key="index +dropCol[index].prop"
                         :prop="dropCol[index].prop"
                         :label="item.label"
+                        sortable="custom"
                     >
                         <template slot-scope="scope">
                             <span>{{ scope.row[dropCol[index].prop] }}</span>
@@ -39,20 +47,7 @@
     new Vue({
         el: '#app',
         data: {
-            col: [
-                {
-                    label: '日期',
-                    prop: 'date',
-                },
-                {
-                    label: '姓名',
-                    prop: 'name',
-                },
-                {
-                    label: '地址',
-                    prop: 'address',
-                },
-            ],
+            sort: { prop: 'name', order: 'ascending' },
             dropCol: [
                 {
                     label: '日期',
@@ -125,6 +120,55 @@
                         this.dropCol.splice(evt.oldIndex, 1)
                         this.dropCol.splice(evt.newIndex, 0, oldItem)
                     },
+                })
+            },
+            //排序
+            sortChange(column) {
+                console.log(column)
+                // column.prop = 'id'
+                this.tableData = [
+                    {
+                        id: '2',
+                        date: '2016-05-04',
+                        name: '王小虎2',
+                        address: '上海市普陀区金沙江路 200 弄',
+                    },
+                    {
+                        id: '1',
+                        date: '2016-05-02',
+                        name: '王小虎1',
+                        address: '上海市普陀区金沙江路 100 弄',
+                    },
+                    {
+                        id: '4',
+                        date: '2016-05-03',
+                        name: '王小虎4',
+                        address: '上海市普陀区金沙江路 400 弄',
+                    },
+                    {
+                        id: '3',
+                        date: '2016-05-01',
+                        name: '王小虎3',
+                        address: '上海市普陀区金沙江路 300 弄',
+                    },
+                ]
+                this.tableData.sort((prev, next) => {
+                    if (column.order === 'ascending') {
+                        let res = prev[column.prop] - next[column.prop]
+                        console.log(
+                            res,
+                            prev[column.prop],
+                            next[column.prop],
+                            column.prop
+                        )
+                        return res
+                    } else if (column.order === 'descending') {
+                        let res = next[column.prop] - prev[column.prop]
+                        console.log(res)
+                        return res
+                    } else {
+                        return 0
+                    }
                 })
             },
         },
